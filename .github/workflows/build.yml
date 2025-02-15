@@ -2,17 +2,13 @@ name: Build and Push Plex Docker Image
 on:
   push:
     branches: [ main ]
-    paths:
-      - 'plex_wrapper/Dockerfile'
   pull_request:
     branches: [ main ]
-    paths:
-      - 'plex_wrapper/Dockerfile'
   workflow_dispatch:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository }}/plex_wrapper
+  IMAGE_NAME: ${{ github.repository }}
 
 jobs:
   build:
@@ -44,7 +40,8 @@ jobs:
     - name: Build and push Plex image
       uses: docker/build-push-action@v4
       with:
-        context: ./plex_wrapper
+        context: .
+        file: ./Dockerfile
         platforms: linux/amd64
         push: true
         tags: ${{ steps.meta.outputs.tags }}
